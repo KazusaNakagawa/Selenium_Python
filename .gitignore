@@ -1,0 +1,6 @@
+*.log
+*.bk
+
+.idea/
+log/
+venv/
