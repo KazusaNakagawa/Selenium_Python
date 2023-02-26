@@ -31,3 +31,4 @@ I have the chromedriver and google chrome versions matched, but it does not work
 ## Ref
 * [logging.handlers Timedrotatingfilehandler](https://docs.python.org/3/library/logging.handlers.html#timedrotatingfilehandler)
 * https://selenium-python.readthedocs.io/
+* [nightmare or Selenium 環境構築](https://kazusabook.notion.site/nightmare-or-Selenium-a8330ccfdc95433d8b2e72293eddcdd6) 
