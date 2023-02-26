@@ -72,11 +72,45 @@ class Driver(object):
                 event["element"].send_keys(query)
                 event["element"].send_keys(Keys.ENTER)
                 sleep(sleep_)
+                self.clear_search_box()
 
         except NoneElementsError:
             self.log.logger.error('None elements Error ...')
+            self.close()
         except Exception as ex:
             self.log.logger.error({f"'ex: '{ex}"})
             self.log.logger.error(traceback.format_exc())
-        finally:
             self.close()
+
+    def second_over_search_query(self, *args, **keywords) -> None:
+        pass
+
+    def clear_search_box(self, *args, **keywords) -> None:
+        pass
+
+
+class YahooBrowser(Driver):
+
+    def __init__(self, url='https://www.yahoo.co.jp'):
+        super().__init__(url=url)
+
+    def second_over_search_query(self, by_class_name='SearchBox__searchInput', query=None, sleep_=3) -> None:
+        """ 検索文字列入力 2回目以降 """
+        elements = self.driver.find_elements(By.CLASS_NAME, by_class_name)
+
+        event = {"element": elements[0]}
+        self.log.logger.info(f"search query: {query}")
+        event["element"].send_keys(query)
+        event["element"].send_keys(Keys.ENTER)
+        sleep(sleep_)
+        self.clear_search_box()
+
+    def clear_search_box(self, by_class_name='SearchBox__clearButton', sleep_=3) -> None:
+        """ 検索文字列を削除 """
+        elements = self.driver.find_elements(By.CLASS_NAME, by_class_name)
+        event = {"element": elements[0]}
+        self.log.logger.debug({f"elements: {elements}"})
+        event["element"].send_keys(Keys.ENTER)
+        self.log.logger.info({f"msg: cleared search box"})
+
+        sleep(sleep_)
