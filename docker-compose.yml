@@ -1,0 +1,16 @@
+version: '3.9'
+
+services:
+  crawl:
+    platform: linux/amd64
+    image: crawl:1.0.0
+    container_name: crawl
+    build: .
+    ports:
+      - '8888:8888'
+    volumes:
+      - '.:/work'
+    environment:
+      TZ: Asia/Tokyo
+    tty: true
+    stdin_open: true
