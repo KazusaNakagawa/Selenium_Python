@@ -1,0 +1,33 @@
+## Selenium Python
+
+### premise
+* Mac M1
+* Python: 3.10.x
+
+### Procedure
+1. [Create a temporary environment.](https://docs.python.org/3/library/venv.html#module-venv)
+   ```bash
+   python3 -m venv venv
+   ```
+2. activate venv
+   ```bash
+   source venv/bin/activate
+   ```
+3. Install the package
+   ```bash
+   pip install -r requirements.txt
+   ```
+4. Run `main.py`.
+   ```bash
+   # cd src/
+   python main.py
+   ```
+
+### Docker
+**Consideration.**
+
+I have the chromedriver and google chrome versions matched, but it does not work on v110.0.5481 series.
+
+## Ref
+* [logging.handlers Timedrotatingfilehandler](https://docs.python.org/3/library/logging.handlers.html#timedrotatingfilehandler)
+* https://selenium-python.readthedocs.io/
