@@ -9,7 +9,7 @@ from selenium.webdriver.chrome import service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 
-from src.models.org_log import Log
+from models.org_log import Log
 
 _EXEC_FILE_NAME = os.path.basename(__file__)[:-3]
 

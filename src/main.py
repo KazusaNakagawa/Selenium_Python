@@ -1,4 +1,4 @@
-from src.models.driver import Driver
+from models.driver import Driver
 
 if __name__ == '__main__':
     d = Driver(url='https://www.yahoo.co.jp/')
