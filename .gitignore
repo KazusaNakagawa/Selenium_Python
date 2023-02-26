@@ -1,5 +1,6 @@
 *.log
 *.bk
+__pycache__/
 
 .idea/
 log/
