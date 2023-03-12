@@ -155,6 +155,7 @@ class LoginSite(Driver):
             self.driver.execute_script("arguments[0].click();", elements[0])
             sleep(5)
 
+            # FIXME: 現状 headless mode では動作しない. ログインページのまま
             # assert self.driver.title == title
             # self.log.logger.info({'msg': f"{title} OK"})
             elements = self.wait.until(
