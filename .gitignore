@@ -2,6 +2,7 @@
 *.bk
 __pycache__/
 
+.env
 .idea/
 log/
 venv/
