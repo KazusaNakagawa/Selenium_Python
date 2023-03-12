@@ -51,10 +51,11 @@ def login_site2_main():
     email = os.environ['LOGIN_EMAIL2']
     password = os.environ['LOGIN_PASSWORD2']
     title = os.environ['LOGIN_TITLE2']
+    home_title = os.environ['HOME_TITLE2']
 
     ls2 = LoginSite2(url=url)
     try:
-        ls2.login(company=company, email=email, password=password, login_title=title)
+        ls2.login(company=company, email=email, password=password, login_title=title, home_title=home_title)
 
     except Exception as ex:
         ls2.log.logger.error(ex)

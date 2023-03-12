@@ -151,7 +151,7 @@ class LoginSite(Driver):
 
         try:
             elements = self.wait.until(lambda x: x.find_elements(By.XPATH, '//*[@id="login-form"]/div[3]/button'))
-            # headless mode: login button が なくなる ...
+            # headless mode: login button counter-measure
             self.driver.execute_script("arguments[0].click();", elements[0])
             sleep(5)
 
@@ -180,7 +180,7 @@ class LoginSite2(Driver):
     def __init__(self, url=None):
         super().__init__(url=url)
 
-    def login(self, company, email, password, login_title):
+    def login(self, company, email, password, login_title, home_title):
         assert self.driver.title == login_title
         self.log.logger.info({'msg': f"{login_title} OK"})
 
@@ -205,6 +205,5 @@ class LoginSite2(Driver):
         sleep(3)
         self.driver.execute_script("arguments[0].click();", elements[0])
 
-        home_title = 'ホーム | マネーフォワード クラウド勤怠'
         assert self.driver.title == home_title
         self.log.logger.info({'msg': f"{home_title} OK"})
