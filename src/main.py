@@ -1,6 +1,7 @@
 from models.driver import YahooBrowser
 
-if __name__ == '__main__':
+
+def main():
     yb = YahooBrowser()
     queries = ['きょうの料理', 'ChatGTP おすすめ']
     try:
@@ -16,3 +17,7 @@ if __name__ == '__main__':
     finally:
         yb.close()
         yb.log.logger.info('main end')
+
+
+if __name__ == '__main__':
+    main()

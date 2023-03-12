@@ -8,6 +8,7 @@ from time import sleep
 from selenium.webdriver.chrome import service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.support.wait import WebDriverWait
 
 from models.org_log import Log
 
@@ -28,7 +29,7 @@ class Driver(object):
         self.log = Log(logger_name=_EXEC_FILE_NAME)
         self.log.logger.info('init ...')
         options = Options()
-        options.add_argument('--window-size=1280,1024')
+        options.add_argument('--window-size=640,512')
 
         if len(sys.argv) > 1 and sys.argv[1] == '--linux':
             # docker, linux etc
@@ -41,6 +42,9 @@ class Driver(object):
         else:
             chrome_service = service.Service(executable_path='/usr/local/bin/chromedriver')
             self.driver = webdriver.Chrome(service=chrome_service, options=options)
+            self.driver = webdriver.Chrome(options=options)
+
+        self.wait = WebDriverWait(self.driver, 10)
         # search url
         self.driver.get(url)
         self.log.logger.info('init end')
@@ -60,7 +64,7 @@ class Driver(object):
         """
 
         try:
-            elements = self.driver.find_elements(By.CLASS_NAME, by_class_name)
+            elements = self.wait.until(lambda x: x.find_elements(By.CLASS_NAME, by_class_name))
             self.log.logger.debug({f"elements: {elements}"})
 
             if not elements:
@@ -71,7 +75,8 @@ class Driver(object):
                 self.log.logger.info(f"search query: {query}")
                 event["element"].send_keys(query)
                 event["element"].send_keys(Keys.ENTER)
-                sleep(sleep_)
+                self.driver.implicitly_wait(20)
+                # 入力値 clear
                 self.clear_search_box()
 
         except NoneElementsError:
@@ -96,7 +101,7 @@ class YahooBrowser(Driver):
 
     def second_over_search_query(self, by_class_name='SearchBox__searchInput', query=None, sleep_=3) -> None:
         """ 検索文字列入力 2回目以降 """
-        elements = self.driver.find_elements(By.CLASS_NAME, by_class_name)
+        elements = self.wait.until(lambda x: x.find_elements(By.CLASS_NAME, by_class_name))
 
         event = {"element": elements[0]}
         self.log.logger.info(f"search query: {query}")
