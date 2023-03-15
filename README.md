@@ -17,10 +17,15 @@
    ```bash
    pip install -r requirements.txt
    ```
-4. Run `main.py`.
+4. set `crawl.json`
+
+   Please refer to [crawl.json.sample](https://github.com/KazusaNakagawa/selenium-python/blob/develop/src/conf/crawl.json.sample) to set the value to be crawled.
+
+5. Run `main.py`.
    ```bash
    # cd src/
-   python main.py
+   ex:
+   python main.py --target id0002 --headless 1
    ```
 
 ### Docker
