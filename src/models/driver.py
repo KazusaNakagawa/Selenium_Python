@@ -11,8 +11,6 @@ from selenium.webdriver.support.wait import WebDriverWait
 
 from models.org_log import Log
 
-_EXEC_FILE_NAME = os.path.basename(__file__)[:-3]
-
 
 class NoneElementsError(Exception):
     """ None Elements Error """
@@ -24,7 +22,7 @@ class Driver(object):
           params:
             url(str): search target url
         """
-        self.log = Log(logger_name=_EXEC_FILE_NAME)
+        self.log = Log(logger_name=__name__)
         self.log.logger.info('init ...')
 
         self.headless = headless
@@ -35,10 +33,11 @@ class Driver(object):
         self.log.logger.info({'url': url})
         self.log.logger.info('init end')
 
-    def _set_chrome_option(self):
-        """ISSUES:
-        Chrome Option
+    def _set_chrome_option(self) -> webdriver:
+        """ Chrome Option
 
+        return:
+          selenium.webdriver.chrome.webdriver.WebDriver
         """
         options = Options()
         options.add_argument('--window-size=640,1024')
@@ -49,10 +48,12 @@ class Driver(object):
             options.add_argument('--headless')
             options.add_argument('--no-sandbox')
             options.add_argument('--disable-gpu')
-            chrome_service = service.Service(executable_path='/usr/bin/chromedriver')
+            # User Agernt を設定してクロールが成功する場合は、クロール先のサイトにバグが発生している可能性がある
             ua = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_2) '
             ua += 'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.88 Safari/537.36'
             options.add_argument(f"user-agent={ua}")
+
+            chrome_service = service.Service(executable_path='/usr/bin/chromedriver')
             driver = webdriver.Chrome(service=chrome_service, options=options)
         else:
             chrome_service = service.Service(executable_path='/usr/local/bin/chromedriver')
@@ -65,13 +66,12 @@ class Driver(object):
         self.driver.quit()
         self.log.logger.info('done')
 
-    def search_query(self, by_class_name='gLFyf', query=None, sleep_=5) -> None:
+    def search_query(self, by_class_name='gLFyf', query=None) -> None:
         """ 指定文字列で検索し Enter
 
         params:
           by_class_name(str): 検索タグのクラス名, default: gLFyf (Google)
           query(str)     : 検索文字列, default: None
-          sleep_(int)    : 処理間隔 (sec)
         """
 
         try:
@@ -108,8 +108,8 @@ class Driver(object):
         """tag 要素を当てて入力する
 
         params:
-          xpath(str)
-          send_key(str)
+          xpath(str)   : 入力対象の xpath
+          send_key(str): 入力文字列
 
         """
         elements = self.wait.until(lambda x: x.find_elements(By.XPATH, xpath))
