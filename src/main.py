@@ -1,3 +1,6 @@
+"""
+Main executable file.
+"""
 import json
 import sys
 from time import sleep
@@ -8,20 +11,21 @@ from models.driver import (
 
 
 def yahoo_main():
-    yb = YahooBrowser()
+    """Crawl Yahoo Engine"""
+    yahoo_engine = YahooBrowser()
     queries = ['きょうの料理', 'ChatGTP おすすめ']
     try:
         for idx, query in enumerate(queries):
             if idx == 0:
-                yb.search_query(by_class_name='_1wsoZ5fswvzAoNYvIJgrU4', query=query)
+                yahoo_engine.search_query(by_class_name='_1wsoZ5fswvzAoNYvIJgrU4', query=query)
             else:
-                yb.second_over_search_query(query=query)
+                yahoo_engine.second_over_search_query(query=query)
 
     except Exception as ex:
-        yb.log.logger.error(ex)
+        yahoo_engine.log.logger.error(ex)
     finally:
-        yb.close()
-        yb.log.logger.info('main end')
+        yahoo_engine.close()
+        yahoo_engine.log.logger.info('main end')
 
 
 def main():
@@ -34,11 +38,12 @@ def main():
       python main.py --target id0002 --headless 1
       python main.py --target id0001 --headless 0
     """
-    json_crawl = json.load(open('./conf/crawl.json', 'r'))
-    target_id = json_crawl[0][sys.argv[2]]
-    site = target_id['site']
-    account = target_id['account']
-    xpath = site['xpath']
+    with open('./conf/crawl.json', 'r', encoding='utf-8') as json_file:
+        json_crawl = json.load(json_file)
+        target_id = json_crawl[0][sys.argv[2]]
+        site = target_id['site']
+        account = target_id['account']
+        xpath = site['xpath']
 
     driver = Driver(url=site['url'], headless=int(sys.argv[4]))
 
@@ -61,4 +66,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-    # yahoo_main()

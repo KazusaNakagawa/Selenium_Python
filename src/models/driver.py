@@ -1,28 +1,32 @@
-import os
+"""
+Driver model
+"""
 import traceback
 
+from time import sleep
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
-from time import sleep
 from selenium.webdriver.chrome import service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.wait import WebDriverWait
 
-from models.org_log import Log
+from models.org_log import OrgLog
 
 
 class NoneElementsError(Exception):
     """ None Elements Error """
 
 
-class Driver(object):
+class Driver:
+    """ Driver model """
+
     def __init__(self, url="https://www.google.co.jp/", headless=False):
         """Default: Google Chrome
           params:
             url(str): search target url
         """
-        self.log = Log(logger_name=__name__)
+        self.log = OrgLog(logger_name=__name__)
         self.log.logger.info('init ...')
 
         self.headless = headless
@@ -49,9 +53,9 @@ class Driver(object):
             options.add_argument('--no-sandbox')
             options.add_argument('--disable-gpu')
             # User Agernt を設定してクロールが成功する場合は、クロール先のサイトにバグが発生している可能性がある
-            ua = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_2) '
-            ua += 'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.88 Safari/537.36'
-            options.add_argument(f"user-agent={ua}")
+            user_agent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_2) '
+            user_agent += 'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.88 Safari/537.36'
+            options.add_argument(f"user-agent={user_agent}")
 
             chrome_service = service.Service(executable_path='/usr/bin/chromedriver')
             driver = webdriver.Chrome(service=chrome_service, options=options)
@@ -62,6 +66,7 @@ class Driver(object):
         return driver
 
     def close(self):
+        """driver close"""
         self.driver.close()
         self.driver.quit()
         self.log.logger.info('done')
@@ -99,10 +104,10 @@ class Driver(object):
             self.close()
 
     def second_over_search_query(self, *args, **keywords) -> None:
-        pass
+        """ second_over_search_query """
 
     def clear_search_box(self, *args, **keywords) -> None:
-        pass
+        """ Clear Search Box """
 
     def send_key(self, xpath, send_key):
         """tag 要素を当てて入力する
@@ -129,11 +134,13 @@ class Driver(object):
 
 
 class YahooBrowser(Driver):
+    """Yahoo Engine"""
 
     def __init__(self, url='https://www.yahoo.co.jp'):
         super().__init__(url=url)
 
-    def second_over_search_query(self, by_class_name='SearchBox__searchInput', query=None, sleep_=3) -> None:
+    def second_over_search_query(
+            self, by_class_name='SearchBox__searchInput', query=None, sleep_=3) -> None:
         """ 検索文字列入力 2回目以降 """
         elements = self.wait.until(lambda x: x.find_elements(By.CLASS_NAME, by_class_name))
 
@@ -150,6 +157,6 @@ class YahooBrowser(Driver):
         event = {"element": elements[0]}
         self.log.logger.debug({f"elements: {elements}"})
         event["element"].send_keys(Keys.ENTER)
-        self.log.logger.info({f"msg: cleared search box"})
+        self.log.logger.info({'msg': 'cleared search box'})
 
         sleep(sleep_)
