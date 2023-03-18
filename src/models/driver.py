@@ -103,10 +103,10 @@ class Driver:
             self.log.logger.error(traceback.format_exc())
             self.close()
 
-    def second_over_search_query(cls, *args, **keywords) -> None:
+    def second_over_search_query(self, *args, **keywords) -> None:
         """ second_over_search_query """
 
-    def clear_search_box(cls, *args, **keywords) -> None:
+    def clear_search_box(self, *args, **keywords) -> None:
         """ Clear Search Box """
 
     def send_key(self, xpath, send_key):
