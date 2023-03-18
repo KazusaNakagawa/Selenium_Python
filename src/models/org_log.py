@@ -1,11 +1,16 @@
+"""
+Log setting model
+"""
+import dataclasses
 import json
-import logging
 import os
-
+import logging
 import logging.config
 
 
-class Log(object):
+@dataclasses.dataclass
+class OrgLog:
+    """ Log setting model """
 
     def __init__(self, conf_file='conf/log_format.json', logger_name=None):
         if not os.path.isdir('../log'):
@@ -16,9 +21,9 @@ class Log(object):
     @classmethod
     def _read_conf_file(cls, conf_file: str):
         """ Loading a format file """
-        with open(conf_file, 'r', encoding='utf-8') as f:
-            f_ = json.load(f)
-            logging.config.dictConfig(f_)
+        with open(conf_file, 'r', encoding='utf-8') as conf_f:
+            conf_file = json.load(conf_f)
+            logging.config.dictConfig(conf_file)
 
     def _test(self):
         """ Test Run """
