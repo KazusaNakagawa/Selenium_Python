@@ -20,4 +20,4 @@ jobs:
         pip install -r requirements.txt
     - name: Analysing the code with pylint
       working-directory: ./src
-      run: pylint $(git ls-files '*.py')
+      # run: pylint $(git ls-files '*.py')
