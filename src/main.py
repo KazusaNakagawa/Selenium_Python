@@ -1,3 +1,6 @@
+"""
+Main executable file.
+"""
 import json
 import sys
 from time import sleep
@@ -8,20 +11,21 @@ from models.driver import (
 
 
 def yahoo_main():
-    yb = YahooBrowser()
+    """Crawl Yahoo Engine"""
+    yahoo_engine = YahooBrowser()
     queries = ['きょうの料理', 'ChatGTP おすすめ']
     try:
         for idx, query in enumerate(queries):
             if idx == 0:
-                yb.search_query(by_class_name='_1wsoZ5fswvzAoNYvIJgrU4', query=query)
+                yahoo_engine.search_query(by_class_name='_1wsoZ5fswvzAoNYvIJgrU4', query=query)
             else:
-                yb.second_over_search_query(query=query)
+                yahoo_engine.second_over_search_query(query=query)
 
     except Exception as ex:
-        yb.log.logger.error(ex)
+        yahoo_engine.log.logger.error(ex)
     finally:
-        yb.close()
-        yb.log.logger.info('main end')
+        yahoo_engine.close()
+        yahoo_engine.log.logger.info('main end')
 
 
 def main():
