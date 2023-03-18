@@ -1,7 +1,6 @@
 """
 Driver model
 """
-import abc
 import traceback
 
 from time import sleep
@@ -104,11 +103,9 @@ class Driver:
             self.log.logger.error(traceback.format_exc())
             self.close()
 
-    @abc.abstractclassmethod
     def second_over_search_query(cls, *args, **keywords) -> None:
         """ second_over_search_query """
 
-    @abc.abstractclassmethod
     def clear_search_box(cls, *args, **keywords) -> None:
         """ Clear Search Box """
 
@@ -160,6 +157,6 @@ class YahooBrowser(Driver):
         event = {"element": elements[0]}
         self.log.logger.debug({f"elements: {elements}"})
         event["element"].send_keys(Keys.ENTER)
-        self.log.logger.info({f"msg: cleared search box"})
+        self.log.logger.info({'msg': 'cleared search box'})
 
         sleep(sleep_)

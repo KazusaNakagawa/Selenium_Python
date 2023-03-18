@@ -38,11 +38,12 @@ def main():
       python main.py --target id0002 --headless 1
       python main.py --target id0001 --headless 0
     """
-    json_crawl = json.load(open('./conf/crawl.json', 'r'))
-    target_id = json_crawl[0][sys.argv[2]]
-    site = target_id['site']
-    account = target_id['account']
-    xpath = site['xpath']
+    with open('./conf/crawl.json', 'r') as json_file:
+        json_crawl = json.load(json_file)
+        target_id = json_crawl[0][sys.argv[2]]
+        site = target_id['site']
+        account = target_id['account']
+        xpath = site['xpath']
 
     driver = Driver(url=site['url'], headless=int(sys.argv[4]))
 
