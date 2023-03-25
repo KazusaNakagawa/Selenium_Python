@@ -16,6 +16,6 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-      - name: Test access to Azure
+      - name: Test2 access to Azure
         run: |
           az account show --query name
