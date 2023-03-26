@@ -1,21 +1,24 @@
-name: Login to Azure
-
+# https://learn.microsoft.com/ja-jp/azure/developer/github/connect-from-azure?tabs=azure-portal%2Clinux
+name: Run Azure Login with OpenID Connect
 on: [push]
 
-env:
-  AZURE_SUBSCRIPTION: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+permissions:
+  id-token: write
+  contents: read
 
 jobs:
-  login:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Azure Login
+      - name: "Az CLI login"
         uses: azure/login@v1
         with:
-          creds: ${{ secrets.AZURE_CLIENT_ID }}
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-      - name: Set Subscription
-        run: az account set --subscription ${{ env.AZURE_SUBSCRIPTION }}
-
-      - name: List Resource Groups
-        run: az group list --query "[].name" -o tsv
+      - name: "Run Azure CLI commands"
+        run: |
+          az account show
+          az group list
+          pwd
